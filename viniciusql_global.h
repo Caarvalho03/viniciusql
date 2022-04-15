@@ -1,0 +1,12 @@
+#ifndef VINICIUSQL_GLOBAL_H
+#define VINICIUSQL_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(VINICIUSQL_LIBRARY)
+#  define VINICIUSQL_EXPORT Q_DECL_EXPORT
+#else
+#  define VINICIUSQL_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // VINICIUSQL_GLOBAL_H
