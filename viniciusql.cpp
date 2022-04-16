@@ -61,8 +61,6 @@ int Viniciusql::insert(QVariantMap maps)
     else{
         this->query.clear();
         q.~QSqlQuery();
-        return -1;
-
     }
     return -1;
 }
@@ -82,6 +80,28 @@ Viniciusql* Viniciusql::select(QStringList columns)
         qDebug() << "Dados de columns são inválidos.";
     return this;
 
+}
+
+Viniciusql *Viniciusql::update(QVariantMap maps)
+{
+    QStringList columns = maps.keys();
+    this->values = maps.values();
+    int cont = 0;
+
+    this->query += "update " + this->table + "set ";
+    while(cont < columns.size()){
+        this->query += columns[cont] + " = ? ";
+        if(cont != columns.size() - 1)
+            this->query += ", ";
+        cont++;
+    }
+    return this;
+}
+
+Viniciusql *Viniciusql::destroy()
+{
+    this->query += "delete from " + this->table;
+    return this;
 }
 
 Viniciusql* Viniciusql::equals(QString column, QVariant value)
@@ -123,7 +143,6 @@ QList<QVariantMap> Viniciusql::finishSelect()
     QList<QVariantMap> list;
     QVariantMap results;
     if(q.prepare(this->query)){
-        qDebug() << "Select bem escrito";
         q.exec();
         while(q.next()){
             qDebug() << "criando a lista final";
@@ -142,3 +161,18 @@ QList<QVariantMap> Viniciusql::finishSelect()
     return {};
 
 }
+
+bool Viniciusql::finish()
+{
+    QSqlQuery query(this->query);
+    if(this->values.size() > 0){
+        foreach(QVariant value, values){
+            query.addBindValue(value);
+        }
+    }
+    this->query.clear();
+    this->values.clear();
+    query.~QSqlQuery();
+    return query.exec();
+}
+

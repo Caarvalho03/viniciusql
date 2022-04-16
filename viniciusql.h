@@ -9,7 +9,6 @@ class VINICIUSQL_EXPORT Viniciusql
 {
 public:
     //Attributes
-    QString query;
     QString table;
 
     //Getters e Setters
@@ -21,6 +20,8 @@ public:
     //Sql Methods
     int insert(QVariantMap maps);
     Viniciusql* select(QStringList columns);
+    Viniciusql* update(QVariantMap maps);
+    Viniciusql* destroy();
 
     //Specifiers
     Viniciusql* equals(QString column, QVariant value);
@@ -32,11 +33,14 @@ public:
 
     //finisher
     QList<QVariantMap> finishSelect();
+    bool finish();
 
 private:
     //Attributes
     QStringList columns;
     QStringList selectColumns;
+    QVariantList values;
+    QString query;
 
     //Getters e Setters
     void setColumns();
