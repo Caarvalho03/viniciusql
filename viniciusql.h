@@ -39,10 +39,7 @@ private:
     //Attributes
     QStringList columns;
     QStringList selectColumns;
-<<<<<<< Updated upstream
     QVariantList values;
-=======
->>>>>>> Stashed changes
     QString query;
 
     //Getters e Setters
