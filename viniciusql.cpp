@@ -9,6 +9,11 @@ QStringList Viniciusql::getColumns()
     return this->selectColumns;
 }
 
+void Viniciusql::setSql(QString sql)
+{
+    this->query += sql;
+}
+
 Viniciusql::Viniciusql(QString table)
 {
     this->table = table;
@@ -36,7 +41,7 @@ int Viniciusql::insert(QVariantMap maps)
     QStringList columns;
     QVariantList values;
     columns = maps.keys();
-    values = maps.values();
+    this->values = maps.values();
     this->query =  "insert into " + this->table + "(";
     this->query += columns.join(",") + ") values(";
     while(cont < values.size()){
@@ -165,14 +170,15 @@ QList<QVariantMap> Viniciusql::finishSelect()
 bool Viniciusql::finish()
 {
     QSqlQuery query(this->query);
+    bool isInsert = this->query.contains("insert");
     if(this->values.size() > 0){
         foreach(QVariant value, values){
             query.addBindValue(value);
         }
     }
+    bool result = query.exec();
     this->query.clear();
     this->values.clear();
-    query.~QSqlQuery();
-    return query.exec();
+    return isInsert? query.lastInsertId().toInt() : result;
 }
 

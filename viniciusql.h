@@ -13,6 +13,7 @@ public:
 
     //Getters e Setters
     QStringList getColumns();
+    void setSql(QString sql);
 
     //Constructors
     Viniciusql(QString table);
