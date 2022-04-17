@@ -35,39 +35,23 @@ void Viniciusql::setColumns()
     q.~QSqlQuery();
 }
 
-int Viniciusql::insert(QVariantMap maps)
+Viniciusql* Viniciusql::insert(QVariantMap maps)
 {
     int cont = 0;
     QStringList columns;
-    QVariantList values;
     columns = maps.keys();
     this->values = maps.values();
     this->query =  "insert into " + this->table + "(";
     this->query += columns.join(",") + ") values(";
-    while(cont < values.size()){
+    while(cont < this->values.size()){
         this->query += "?";
-        if(cont != values.size() -1)
+        if(cont != this->values.size() -1)
             this->query += ",";
         else
             this->query += ")";
         cont++;
     }
-    qDebug() << "query: " <<query;
-    QSqlQuery q(this->query);
-    foreach(QVariant value, values){
-        q.addBindValue(value);
-    }
-    if(q.exec()){
-        this->query.clear();
-        return q.lastInsertId().toInt();
-        q.~QSqlQuery();
-
-    }
-    else{
-        this->query.clear();
-        q.~QSqlQuery();
-    }
-    return -1;
+    return this;
 }
 Viniciusql* Viniciusql::select(QStringList columns)
 {
@@ -170,15 +154,13 @@ QList<QVariantMap> Viniciusql::finishSelect()
 bool Viniciusql::finish()
 {
     QSqlQuery query(this->query);
-    bool isInsert = this->query.contains("insert");
     if(this->values.size() > 0){
         foreach(QVariant value, values){
             query.addBindValue(value);
         }
     }
-    bool result = query.exec();
     this->query.clear();
     this->values.clear();
-    return isInsert? query.lastInsertId().toInt() : result;
+    return query.exec();
 }
 

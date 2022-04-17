@@ -19,7 +19,7 @@ public:
     Viniciusql(QString table);
 
     //Sql Methods
-    int insert(QVariantMap maps);
+    Viniciusql* insert(QVariantMap maps);
     Viniciusql* select(QStringList columns);
     Viniciusql* update(QVariantMap maps);
     Viniciusql* destroy();
