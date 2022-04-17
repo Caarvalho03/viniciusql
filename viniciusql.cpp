@@ -15,6 +15,10 @@ Viniciusql::Viniciusql(QString table)
     setColumns();
 }
 
+void Viniciusql::setSql(QString sql)
+{
+    this->query += sql;
+}
 void Viniciusql::setColumns()
 {
     this->query = "pragma table_info ('" + this->table + "')";
