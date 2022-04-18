@@ -77,9 +77,9 @@ Viniciusql *Viniciusql::update(QVariantMap maps)
     this->values = maps.values();
     int cont = 0;
 
-    this->query += "update " + this->table + "set ";
+    this->query ="update " + this->table + " set ";
     while(cont < columns.size()){
-        this->query += columns[cont] + " = ? ";
+        this->query += columns[cont] + " = ?";
         if(cont != columns.size() - 1)
             this->query += ", ";
         cont++;
@@ -99,7 +99,6 @@ Viniciusql* Viniciusql::equals(QString column, QVariant value)
         this->query += column + " = " + value.toString();
     else
         this->query += " where " + column + " = " + value.toString();
-    qDebug() << "query com where " + this->query;
     return this;
 
 }
@@ -110,7 +109,6 @@ Viniciusql *Viniciusql::like(QString column, QVariant value)
         this->query += column + " like " + "%" +  value.toString() + "%";
     else
         this->query += " where " + column + " like " + "%" +  value.toString() + "%";
-    qDebug() << "query com where " + this->query;
     return this;
 }
 
