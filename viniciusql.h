@@ -33,7 +33,7 @@ public:
     Viniciusql* _or();
 
     //finisher
-    QList<QVariantMap> finishSelect();
+    QVariantList finishSelect();
     bool finish();
 
 private:

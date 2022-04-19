@@ -56,13 +56,11 @@ Viniciusql* Viniciusql::insert(QVariantMap maps)
 Viniciusql* Viniciusql::select(QStringList columns)
 {
     if(columns.size() == 1 && columns.at(0) == "*"){
-        qDebug() << "query1 " + this->query;
         this->query = "select * from " + this->table;
         this->selectColumns = this->columns;
     }
     else if(columns.size() >= 1 && !columns.count("*")){
         this->query = "select " + columns.join(",") + " from " + this->table;
-        qDebug() << "query2 " + this->query;
         this->selectColumns = columns;
     }
     else
@@ -124,21 +122,19 @@ Viniciusql* Viniciusql::_or()
     return this;
 }
 
-QList<QVariantMap> Viniciusql::finishSelect()
+QVariantList Viniciusql::finishSelect()
 {
     QSqlQuery q;
-    QList<QVariantMap> list;
+    QVariantList list;
     QVariantMap results;
     if(q.prepare(this->query)){
         q.exec();
         while(q.next()){
-            qDebug() << "criando a lista final";
-            qDebug() << "selected columns = " << this->selectColumns;
             foreach(QString column, this->selectColumns){
                 results.insert(column, q.record().value(q.record().indexOf(column)));
-                list.append(results);
-                results.clear();
             }
+            list.append(results);
+            results.clear();
         }
         return list;
     }
