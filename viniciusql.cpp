@@ -136,11 +136,13 @@ QVariantList Viniciusql::finishSelect()
             list.append(results);
             results.clear();
         }
+        this->query.clear();
         return list;
     }
     else{
         qDebug() << "select falhou";
     }
+    this->query.clear();
     return {};
 
 }
